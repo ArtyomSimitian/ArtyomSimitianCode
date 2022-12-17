@@ -1,0 +1,111 @@
+// Artyom Simitian, CS 117, Sections 18790
+// This program takes in patients on a quarterly basis for three different hospitals.
+// The total for each individaul hospital is displayed along with its OWN individual average!
+
+#include <iostream>
+#include <vector> // include vectors
+using namespace std;
+
+struct Hosptial // Struct to make all declared variables public
+{
+    int average_hospital1 = 0;
+    int average_hospital2 = 0;
+    int average_hospital3 = 0;
+    // Basic averages set for each of the hospitals.
+
+    int total_patient1 = 0;
+    int total_patient2 = 0;
+    int total_patient3 = 0;
+    // Basic totals set for each of the hospitals.
+
+    vector<int> hospital1;
+    vector<int> hospital2;
+    vector<int> hospital3;
+    // Create vectors for each of the hospitals. In this case there will be four total inputs.
+
+    vector<int> getPatients() // Get the amount of patients for each of the hospitals.
+    {
+        int i = 0; // Set i equal to 0 for future use.
+
+        vector<int> v1;
+        cout << "First quarter: "; // Question
+        cin >> i; // Take in "a" as the first spot of the vector
+        v1.push_back(i);
+        cout << "Second quarter: "; // Question
+        cin >> i; // Take in "a" as the second spot of the vector
+        v1.push_back(i);
+        cout << "Third quarter: "; // Question
+        cin >> i; // Take in "a" as the third spot of the vector
+        v1.push_back(i);
+        cout << "Fourth quarter: "; // Question
+        cin >> i; // Take in "a" as the fourth spot of the vector
+        v1.push_back(i);
+        // All of the "v1.push_back"s ^^^ are going to push back the integer taken by 1.
+        // The vector currently does not have a limit. But with this step it is increased by 1.
+        // But we are only taking in four integers in this case.
+        return v1; // Return the final vector.
+    }
+
+    int calculate_total(vector<int>v1) // Find the total for the v1 vector
+    {
+        int total = 0; // Set the current total equal to 0
+        for (int i = 0; i < v1.size(); i++) // For loop to go through the vectors current size (4)
+        {
+            total = total + v1[i]; // Go through the array and add each value and assign it to "total"
+        }
+        return total; // Get final amount.
+    }
+
+    int calculate_avg(int total) // calculate the average.
+    {
+        return total / 4;
+        // After taking in four intputs for each term you can get the average by
+        // taking the total and dividing it by the quarters.
+        // CLARIFICATION: Decided the average should not be in decimals as 0.5 of a person does not make sense logically.
+    }
+
+    void final() // Final output path
+    {
+        cout << "\n--------------------------------------"; // Organization
+        cout << "\nTotal admitted patients: \n"; // Title
+        cout << "Hospital 1: " << total_patient1 << "\n";
+        cout << "Hospital 2: " << total_patient2 << "\n"; // Output the total for each hospital
+        cout << "Hospital 3: " << total_patient3 << "\n";
+        cout << "--------------------------------------"; // Organization
+        cout << "\nAverage number of admitted patients: " << "\n"; // Title
+        cout << "Hospital 1: " << average_hospital1 << "\n";
+        cout << "Hospital 2: " << average_hospital2 << "\n"; // Output the average for each hospital
+        cout << "Hospital 3: " << average_hospital3 << "\n";
+        cout << "--------------------------------------" << endl; // Organization
+    }
+};
+
+int main() // main path
+{
+    struct Hosptial H;
+    // Create a variable for struct Hospital path. (H for hospital for easy understanding)
+
+    cout << "Enter the admitted patients for hospital 1: " << "\n"; // Question
+    H.hospital1 = H.getPatients(); // Take in the amount of patients for hospital 1
+    cout << "\nEnter the admitted patients for hospital 2: " << "\n"; // Question
+    H.hospital2 = H.getPatients(); // Take in the amount of patients for hospital 2
+    cout << "\nEnter the admitted patients for hospital 3: " << "\n"; // Question
+    H.hospital3 = H.getPatients(); // Take in the amount of patients for hospital 3
+
+    // Goes into each of their individual vectors^^^
+
+    H.total_patient1 = H.calculate_total(H.hospital1); // Total = Patients = Hospital 1
+    H.total_patient2 = H.calculate_total(H.hospital2); // Total = Patients = Hospital 2
+    H.total_patient3 = H.calculate_total(H.hospital3); // Total = Patients = Hospital 3
+    // This is done to get each hospitals indiviudal total
+
+    H.average_hospital1 = H.calculate_avg(H.total_patient1); // Average = Average Hospital 1
+    H.average_hospital2 = H.calculate_avg(H.total_patient2); // Average = Average Hospital 2
+    H.average_hospital3 = H.calculate_avg(H.total_patient3); // Average = Average Hospital 3
+    // This is done to get each hospitals individual average
+
+    H.final(); // Call the final path
+
+    return 0;
+}
+
