@@ -1,0 +1,135 @@
+#include <iostream>
+#include <iomanip>
+#include <limits>
+using namespace std;
+
+void getUserInput(double input[], int& NumberSetLimit, const int NUMBERSET) // Void function to get the users input.
+{
+    int x = NumberSetLimit; // NumberSetLimit and int x will be set to the same value as x will be used to display the # of numbers and NumberSetLimit for the space in the array.
+    while (NumberSetLimit < NUMBERSET)  // While loop determining whether or not the user has entered 5 numbers or less.
+    {
+        cout << "Would you like to add another number? Y/N: "; // Prompt. 
+        char decision; // Determines whether or not they want to continue with the program. 
+        cin >> decision;// Takes in decision on whether or not they would like to add more numbers. 
+
+        if ((decision == 'Y') || (decision == 'y')) // If the decision is a yes they will be prompted with the following program. 
+        {
+            int number = NumberSetLimit + 1; // Given that a minimum of two numbers but be entered this would be the users third input.
+            cout << "Please enter the #" << number << " number: "; // Prompt.
+            while (!(cin >> input[x])) // Input Validation While Loop.
+            {
+                cout << "Invalid input. Please enter a number: "; // Prompt
+                cin.clear(); // Clears the error. 
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // // Discards the previous invalid input.
+            }
+            x++; // Move up in the array.
+            NumberSetLimit++; // Add one to the limit.
+        }
+        else if ((decision == 'N') || (decision == 'n')) // If the decision is a no the program will end and display the following. 
+        {
+            break; // End Loop because the user does not want to input any more values.  
+        }
+        else // If an invalid response is provided (anything besides Y, y, N, and n they will be prompted to provide a valid response. 
+        {
+            cout << "Please provide a valid response (Y/N): " << endl; // Prompt for valid response. 
+        } 
+    }
+}
+
+void results(const double input[], int NumberSetLimit) // Function to dispaly the results and perform calculations. 
+{
+    double highest = INT_MIN; // Must be set to the minimum for comparison, because if it was set to INT_MAX highest would not change from the input. 
+    double lowest = INT_MAX; // Must be set to the maximum for comparison, because if it was set to INT_MIN highest would not change from the input. 
+    double total = 0; // Total set at 0 just as a place holder. 
+
+    for (int i = 0; i < NumberSetLimit; i++) // For loop to go through the NumberSetLimit. (int i, i for iterations).
+    {
+        if (input[i] > highest) // Determines whether or not the array 'input' at the instanc i is the highest number. 
+        {
+            highest = input[i]; // If so.. it sets that number equal to highest. (Goes through all numbers in the array with the loop). 
+        }
+        if (input[i] < lowest) // Determines whether or not the array 'input' at the instance i is the lowest number. 
+        {
+            lowest = input[i]; // If so.. iit sets that number equal to lowest. (Goes through all numbers in the array with the loop). 
+        }
+    }
+
+    for (int i = 0; i < NumberSetLimit; i++) // Go through each number in the array.
+    {
+        total += input[i]; // Take all of the num values and add them to the total. 
+    }
+    double average = total / NumberSetLimit; // Take the total and divide it by the inputted values (may vary) to get the average. 
+
+    cout << "_____________________________________________________" << endl; // Format.
+    cout << fixed << setprecision(2); // Format, set answers to two decimal places. 
+    cout << "You Entered: "; // Prompt.
+    for (int i = 0; i < NumberSetLimit; i++) // For loop to go through all inputted values. (int i, i for iterations).
+    {
+        cout << '\t' << input[i]; // Output for thhe for loop as it goes through the array. 
+    }
+    cout << "\n\nHighest: " << highest << endl; // Display highest number entered.
+    cout << "\nLowest: " << lowest << endl; // Display lowest number entered. 
+    cout << "\nAverage: " << average << endl; // Display average number from total. 
+    cout << "_____________________________________________________" << endl; // Format.
+}
+
+bool resetProgram() // Function is set to true or false to determine whether or not the user wants to restart the program. 
+{
+    char restart = 0; // Input to restart the program.
+    cout << "Would you like to do it again? Y/N: ";
+    while (true) // While loop to restart the program. 
+    {
+        cin >> restart; // Take in dicision of whether or not they want to restart.  
+        if (restart == 'N' || restart == 'n') // Program will end.
+        {
+            return false; // Returns false, program ends (must be true to continue the while loop). 
+        }
+        else if (restart == 'Y' || restart == 'y') // Determines if whether or not the response was yes. 
+        {
+            return true; // Returns true, program will continue (restart) due too the while loop. 
+        }
+        else // If an invalid response is provided (anything besides Y, y, N, and n they will be prompted to provide a valid response. 
+        {
+            cout << "Please provide a valid response (Y/N): "; // Prompt for valid response. 
+        }
+    }
+}
+
+int main() // Main Function.
+{
+    const int NUMBERSET = 5; // Available amount of submissions in the array. 
+    cout << "This program asks for up to 5 numbers, a minimum of 2 must be provided." << endl; // Explanation of the program. 
+    cout << "It then displays the numbers, the highest, the lowest, and the average." << endl; // Explanation of the program. 
+
+    while (true) // Everything is encased in an outerloop besides the explanation for the program so if the user decides to restart they can from the beginning.
+    {
+        double input[NUMBERSET] = {}; // Array to recieve the numbers. 
+        int NumberSetLimit = 2; // Number must be set at 2 because the user would have inputed a minimum of 2 numbers already before the while loop. 
+        int c = 0; // c is set to 0 as this will take the first two places in the array (0,1).
+
+        cout << "Please enter the first number: "; // // First Prompt. 
+        while (!(cin >> input[c])) // Input Validation While Loop.
+        {
+            cout << "Invalid input. Please enter a number: "; // Error Prompt.
+            cin.clear(); // Clears the error. 
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discards the previous invalid input. 
+        }
+        c++; // Move up in the array.
+        cout << "Please enter the second number: "; // Second Prompt. 
+        while (!(cin >> input[c])) // Input Validation While Loop
+        {
+            cout << "Invalid input. Please enter a number: "; // Error Prompt.
+            cin.clear(); // Clears the error.
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discards the previous invalid input.
+        }
+
+        getUserInput(input, NumberSetLimit, NUMBERSET); // getUserInput will be called first to get the available (3-5) numbers left.
+        results(input, NumberSetLimit); // Results will be printed after, this is where the calculations will be done as well. 
+
+        if (!resetProgram()) // After the final display and calculations are performed the user will be prompted with an option to restart the program.
+        {
+            return 0; // If the user does not restart the program the loop will end and return 0. 
+        }
+    }
+    return 0; // Return 0 at the end of the program. 
+}
