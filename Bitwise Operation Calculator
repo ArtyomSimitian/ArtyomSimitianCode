@@ -1,0 +1,120 @@
+#include <iostream>
+#include <iomanip>
+#include <cstdint>
+using namespace std;
+
+// Function Parameters
+void output(); // Output Function
+int64_t calculateBitSize(char, const int, int64_t[], int64_t); // Calculation Function
+
+int main()
+{
+	cout << "Bitwise Operation Calculator - 64 Bits - Artyom Simitian\n" << endl; // Title
+	char choice; // Place holder for operater choice.
+	const int doublevaluelimit = 2; // Constant array limit.
+	int64_t values[doublevaluelimit]; // Array with limit set to two.
+	int64_t value = 0; // Being used for operands which require one value input.
+
+	do // do while loop.
+	{
+        output(); // Call output function for menu. 
+		cin >> choice; // Take in operand decision from user. 
+
+        // If operand choice does not equal to any of the options provided.
+		while ((choice != '&') && (choice != '|') && (choice != '^') && (choice != '~') &&
+			(choice != '-') && (choice != '<') && (choice != '>') && (choice != '#'))
+		{
+			cout << endl << "Invalid choice '" << choice << "', please try again." << endl; // Error Prompt.
+            output(); // Display menu again.
+            cin >> choice; // Take in operand choice.
+		}
+         
+		while (choice == '#') // While loop to end the program.
+		{
+			cout << "\nCalculation Ended.\n"; // End of program display.
+			return false; // Return false to end program.
+		}
+
+		calculateBitSize(choice, doublevaluelimit, values, value); // Call calculation function after correct operands are inputted.
+	} while (true); // Do while true. 
+
+    return 0; // Return 0, program ends. (once while loop ends). 
+}
+
+void output() // Output function. 
+{
+    // Menu display for operand options. 
+    cout << "Enter one of the following choices: " << endl;
+    cout << "& - AND" << endl;
+    cout << "| - OR" << endl;
+    cout << "^ - XOR" << endl;
+    cout << "~ - NOT" << endl; // single operand.
+    cout << "- - Negate" << endl; // single operand.
+    cout << "< - Left Shift (Logical Shift Only)" << endl;
+    cout << "> - Right Shift (Logical Shift Only)" << endl;
+    cout << "# - Stop Execution" << endl;
+}
+
+int64_t calculateBitSize(char choice, const int doublevaluelimit, int64_t values[], int64_t value) // Calculate results based off operand decision. 
+{
+    int64_t result = 0; // Result set to 0 as a place holder. 
+
+    // Operands that require two value inputs are in this if statement. (&, |, ^, <, >)
+    if ((choice == '&') || (choice == '|') || (choice == '^') || (choice == '<') || (choice == '>')) // Determine if choice is == to an available operand. 
+    {
+        cout << "\nEnter values for first and second operand: " << endl; // Prompt. 
+        cin >> values[0] >> values[1]; // Take in first and second values into the array.
+
+        if (choice == '&') // If operand decision is &. 
+        {
+            result = values[0] & values[1]; // result is set equal to the result of the operand. 
+        }
+        else if (choice == '|') // If operand decision is |.
+        {
+            result = values[0] | values[1]; // result is set equal to the result of the operand. 
+        }
+        else if (choice == '^') // If operand decision is ^.
+        { 
+            result = values[0] ^ values[1]; // result is set equal to the result of the operand. 
+        }
+
+        else if ((values[1] < 0 || values[1] > 64) && (choice == '<')) // If operand decision is '<' and an error check for logical shift to be less than 64.
+        {
+            cout << "\nShift operand (" << dec << values[1] << ") cannot exceed number of bits (64) - setting result to zero."; // Error Prompt. 
+            result = 0; // Results are set to 0. 
+        }
+        else if ((values[1] < 0 || values[1] > 64) && (choice == '>')) // If operand decision is '>' and an error check for logical shift to be less than 64.
+        {
+            cout << "\nShift operand (" << dec << values[1] << ") cannot exceed number of bits (64) - setting result to zero."; // Error Prompt. 
+            result = 0; // Results are set to 0. 
+        }
+
+        else if (choice == '<' && (values[1] >= 0 && values[1] <= 64)) // If operand decision is '<' and there is no error of a logical shift. 
+        {
+            result = static_cast<uint64_t>(values[0]) << values[1]; // Left Shift by one.
+        }
+        else if (choice == '>' && (values[1] >= 0 && values[1] <= 64)) // If operand decision is '>' and there is no error of a logical shift. 
+        {
+            result = static_cast<uint64_t>(values[0]) >> values[1]; // Right Shift by one. 
+        }
+
+    }
+
+    // Following operands require one value input. 
+    else if (choice == '~') // If operand decision is '~'.
+    {
+        cout << "\nEnter value for operand: " << endl; // Prompt. 
+        cin >> value; // Take in inputted value. 
+        result = ~value; // Set result equal to ~(decided value). 
+    }
+    else if (choice == '-') // If operand decision is '-'.
+    {
+        cout << "\nEnter value for operand: " << endl; // Prompt. 
+        cin >> value; // Take in inputted value. 
+        result = -value; // Set result equal to -(decided value). 
+    }
+
+    cout << "\nResult: " << dec << result; // Display result in dec format. 
+    cout << " [Hexadecimal: " << hex << result << "]" << endl; // Display result in hexadecimal format. 
+    return result; // Return result. 
+}
